@@ -289,13 +289,26 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: 'Something went wrong on the server.' });
 });
 
-connect()
-  .then(async () => {
+// Connects (and seeds an empty database) once per process; serverless invocations reuse it.
+let readyPromise;
+function ready() {
+  readyPromise ||= connect().then(async () => {
     if (await seed()) console.log('Seeded demo data. Admin: admin@yoga.com / admin123');
-    app.listen(PORT, () => console.log(`Yoga booking API running on http://localhost:${PORT}`));
-  })
-  .catch((err) => {
-    console.error('Failed to connect to MongoDB:', err.message);
-    console.error('Check MONGODB_URI in server/.env and that your IP is allowed in Atlas → Network Access.');
-    process.exit(1);
+  }).catch((err) => {
+    readyPromise = undefined;
+    throw err;
   });
+  return readyPromise;
+}
+
+module.exports = { app, ready };
+
+if (require.main === module) {
+  ready()
+    .then(() => app.listen(PORT, () => console.log(`Yoga booking API running on http://localhost:${PORT}`)))
+    .catch((err) => {
+      console.error('Failed to connect to MongoDB:', err.message);
+      console.error('Check MONGODB_URI in server/.env and that your IP is allowed in Atlas → Network Access.');
+      process.exit(1);
+    });
+}

@@ -1,0 +1,19 @@
+{
+  "name": "yoga-booking",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Yoga Class Booking System (Vercel deployment: React client + Express API as a serverless function)",
+  "scripts": {
+    "build": "npm --prefix client ci && npm --prefix client run build"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "bcryptjs": "2.4.3",
+    "cors": "2.8.5",
+    "express": "4.21.0",
+    "jsonwebtoken": "9.0.2",
+    "mongoose": "8.7.0"
+  }
+}
