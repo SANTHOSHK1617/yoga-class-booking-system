@@ -1,0 +1,19 @@
+{
+  "name": "yoga-booking-server",
+  "version": "1.0.0",
+  "description": "REST API for the Yoga Class Booking System",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch-path=index.js --watch-path=db.js --watch-path=seed.js --watch-path=env.js --watch-path=.env index.js",
+    "seed": "node seed.js --reset"
+  },
+  "dependencies": {
+    "bcryptjs": "2.4.3",
+    "cors": "2.8.5",
+    "express": "4.21.0",
+    "jsonwebtoken": "9.0.2",
+    "mongoose": "8.7.0"
+  }
+}
